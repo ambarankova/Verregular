@@ -18,7 +18,8 @@ final class SelectVerbsViewController: UITableViewController {
         
         title = "Select verbs".localized
         view.backgroundColor = .white
-        tableView.register(SelectVerbTableViewCell.self, forCellReuseIdentifier: "SelectVerbTableViewCell")
+        /// заменим на наш реюзАйди
+        tableView.register(SelectVerbTableViewCell.self, forCellReuseIdentifier: SelectVerbTableViewCell.reuseID)
         
     }
     
@@ -35,7 +36,7 @@ extension SelectVerbsViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SelectVerbTableViewCell", for: indexPath) as? SelectVerbTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SelectVerbTableViewCell.reuseID, for: indexPath) as? SelectVerbTableViewCell else { return UITableViewCell() }
         let verb = dataSourse.verbs[indexPath.row]
         cell.configure(with: verb, isSelected: isSelected(verb: verb))
         

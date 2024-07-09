@@ -10,6 +10,9 @@ import SnapKit
 
 final class SelectVerbTableViewCell: UITableViewCell {
     
+    /// Создадим статик свойство что бы вызывать его и не допустить ошибку в написании класса ячейки при ее использовании/регистрации
+    static let reuseID = UUID().uuidString
+    
     enum State {
         case select, unselect
         
@@ -45,41 +48,10 @@ final class SelectVerbTableViewCell: UITableViewCell {
     }()
     
     private lazy var infinitiveView: UIView = UIView()
-    
-    private lazy var infinitiveLbel: UILabel = {
-        let label = UILabel()
-        
-        label.font = .boldSystemFont(ofSize: 16)
-        
-        return label
-    }()
-    
-    private lazy var translationLbel: UILabel = {
-        let label = UILabel()
-        
-        label.font = .systemFont(ofSize: 12)
-        label.textColor = .gray
-        
-        return label
-    }()
-    
-    private lazy var pastLbel: UILabel = {
-        let label = UILabel()
-        
-        label.font = .systemFont(ofSize: 16)
-        label.textAlignment = .center
-        
-        return label
-    }()
-    
-    private lazy var participalLbel: UILabel = {
-        let label = UILabel()
-        
-        label.font = .systemFont(ofSize: 16)
-        label.textAlignment = .center
-        
-        return label
-    }()
+    private lazy var infinitiveLbel = createLabel(font: .boldSystemFont(ofSize: 16))
+    private lazy var translationLbel = createLabel(font: .systemFont(ofSize: 12), color: .gray)
+    private lazy var pastLbel = createLabel(font: .systemFont(ofSize: 16), aligment: .center)
+    private lazy var participalLbel = createLabel(font: .systemFont(ofSize: 16), aligment: .center)
     
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -113,10 +85,11 @@ final class SelectVerbTableViewCell: UITableViewCell {
     }
     
     func setupConstraints() {
-        checkboxImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(20)
-            make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().inset(20)
+        /// Пример:
+        checkboxImageView.snp.makeConstraints {
+            $0.width.height.equalTo(20)
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().inset(20)
         }
         
         infinitiveLbel.snp.makeConstraints { make in
@@ -136,5 +109,16 @@ final class SelectVerbTableViewCell: UITableViewCell {
             make.leading.equalTo(checkboxImageView.snp.trailing).offset(5)
             make.top.right.bottom.equalToSuperview()
         }
+    }
+    
+    /// Немного сократим код, создав метод для создания и конфигурирвоания лейблов
+    private func createLabel(font: UIFont,
+                             aligment: NSTextAlignment? = nil,
+                             color: UIColor? = nil) -> UILabel {
+        let label = UILabel()
+        label.font = font
+        label.textColor = color
+        label.textAlignment = aligment ?? .left
+        return label
     }
 }
