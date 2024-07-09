@@ -13,6 +13,7 @@ class IrregularVerbs {
     static var shared = IrregularVerbs()
     private init() {
         configureVerbs()
+        selectedVerbs.append(contentsOf: verbs)
     }
     
     // MARK: - Properties

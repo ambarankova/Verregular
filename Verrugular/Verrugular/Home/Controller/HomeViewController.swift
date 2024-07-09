@@ -20,32 +20,10 @@ class HomeViewController: UIViewController {
         return label
     }()
     
-    private lazy var firstButton: UIButton = {
-        let button = UIButton()
-        
-        button.setTitle("Select verbs", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .systemGray5
-        button.layer.cornerRadius = cornerRadius
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(goToSelectViewController), for: .touchUpInside)
-        
-        return button
-    }()
-    
-    private lazy var secondButton: UIButton = {
-        let button = UIButton()
-        
-        button.setTitle("Train verbs", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .systemGray5
-        button.layer.cornerRadius = cornerRadius
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(goToTrainViewController), for: .touchUpInside)
-        
-        return button
-    }()
-    
+    /// Создадим метод для создания кнопок, что бы сократить количество кода
+    private lazy var firstButton = createButton(title: "Select verbs", target: #selector(goToSelectViewController))
+    private lazy var secondButton = createButton(title: "Train verbs", target: #selector(goToTrainViewController))
+
     // MARK: - Properties
     private let cornerRadius: CGFloat = 20
     private let buttonHighе: CGFloat = 80
@@ -67,12 +45,9 @@ class HomeViewController: UIViewController {
     }
     
     private func configureUI() {
-        view.addSubview(titleLabel)
-        view.addSubview(firstButton)
-        view.addSubview(secondButton)
-        
+        /// Пример (плюс у тебя в проекте есть расширение addSubviews):
+        [titleLabel, firstButton, secondButton].forEach {view.addSubview($0)}
         view.backgroundColor = .white
-        
         setupConstrains()
     }
     
@@ -90,5 +65,15 @@ class HomeViewController: UIViewController {
         secondButton.heightAnchor.constraint(equalToConstant: buttonHighе).isActive = true
         secondButton.widthAnchor.constraint(equalTo: firstButton.widthAnchor).isActive = true
     }
+    
+    private func createButton(title: String, target: Selector)-> UIButton {
+        let button = UIButton()
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .systemGray5
+        button.layer.cornerRadius = cornerRadius
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: target, for: .touchUpInside)
+        return button
+    }
 }
-
